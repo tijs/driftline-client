@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3] - 2025-11-28
+
+### Changed
+
+- Track methods are now fire-and-forget (non-blocking)
+- Methods return `void` instead of `Promise<void>`
+- Analytics calls no longer block app execution
+
 ## [0.1.2] - 2025-11-28
 
 ### Added

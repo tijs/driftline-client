@@ -18,10 +18,10 @@
  *   uid,
  * });
  *
- * // Track events
- * await analytics.trackAccountCreated();
- * await analytics.trackView("HomeScreen");
- * await analytics.trackAction("checkin_created", "CheckinScreen", { placeType: "cafe" });
+ * // Track events (fire-and-forget, never blocks)
+ * analytics.trackAccountCreated();
+ * analytics.trackView("HomeScreen");
+ * analytics.trackAction("checkin_created", "CheckinScreen", { placeType: "cafe" });
  * ```
  */
 
@@ -107,8 +107,8 @@ export type AnalyticsClientConfig = {
  *   uid,
  * });
  *
- * await analytics.trackView("HomeScreen");
- * await analytics.trackAction("button_clicked", "HomeScreen", { buttonId: "submit" });
+ * analytics.trackView("HomeScreen");
+ * analytics.trackAction("button_clicked", "HomeScreen", { buttonId: "submit" });
  * ```
  */
 export class AnalyticsClient {
@@ -174,46 +174,49 @@ export class AnalyticsClient {
    * Track when an account is first created/registered for this app view.
    * Should only be called once per user.
    *
+   * This method is fire-and-forget and returns immediately without blocking.
+   *
    * @param props - Optional additional properties
    *
    * @example
    * ```ts
-   * await analytics.trackAccountCreated();
-   * await analytics.trackAccountCreated({ referrer: "twitter" });
+   * analytics.trackAccountCreated();
+   * analytics.trackAccountCreated({ referrer: "twitter" });
    * ```
    */
-  async trackAccountCreated(props?: Record<string, unknown>): Promise<void> {
+  trackAccountCreated(props?: Record<string, unknown>): void {
     const event = this.createEvent(
       "account",
       "account_created",
       undefined,
       props,
     );
-    await this.send(event);
+    this.send(event);
   }
 
   /**
    * Track a screen/view impression.
+   *
+   * This method is fire-and-forget and returns immediately without blocking.
    *
    * @param screen - Screen or page name
    * @param props - Optional additional properties
    *
    * @example
    * ```ts
-   * await analytics.trackView("HomeScreen");
-   * await analytics.trackView("ProfileScreen", { userId: "123" });
+   * analytics.trackView("HomeScreen");
+   * analytics.trackView("ProfileScreen", { userId: "123" });
    * ```
    */
-  async trackView(
-    screen: string,
-    props?: Record<string, unknown>,
-  ): Promise<void> {
+  trackView(screen: string, props?: Record<string, unknown>): void {
     const event = this.createEvent("view", "screen_impression", screen, props);
-    await this.send(event);
+    this.send(event);
   }
 
   /**
    * Track a user action.
+   *
+   * This method is fire-and-forget and returns immediately without blocking.
    *
    * @param name - Action name (e.g., "checkin_created", "button_clicked")
    * @param screen - Optional screen where the action occurred
@@ -221,18 +224,18 @@ export class AnalyticsClient {
    *
    * @example
    * ```ts
-   * await analytics.trackAction("checkin_created");
-   * await analytics.trackAction("checkin_created", "CheckinScreen");
-   * await analytics.trackAction("checkin_created", "CheckinScreen", { placeType: "cafe" });
+   * analytics.trackAction("checkin_created");
+   * analytics.trackAction("checkin_created", "CheckinScreen");
+   * analytics.trackAction("checkin_created", "CheckinScreen", { placeType: "cafe" });
    * ```
    */
-  async trackAction(
+  trackAction(
     name: string,
     screen?: string,
     props?: Record<string, unknown>,
-  ): Promise<void> {
+  ): void {
     const event = this.createEvent("action", name, screen, props);
-    await this.send(event);
+    this.send(event);
   }
 }
 
