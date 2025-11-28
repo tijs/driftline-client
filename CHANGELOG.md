@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2] - 2025-11-28
+
+### Added
+
+- Full JSDoc documentation for all exports
+- Module-level documentation with examples
+- Examples for all public methods
+
 ## [0.1.1] - 2025-11-28
 
 ### Fixed
