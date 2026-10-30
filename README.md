@@ -1,5 +1,7 @@
 # Driftline Client
 
+> **Unmaintained:** This project is no longer maintained.
+
 TypeScript client for
 [Driftline Analytics](https://github.com/tijs/driftline-analytics) - anonymous
 analytics for ATProto app views.
